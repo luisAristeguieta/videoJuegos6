@@ -59,10 +59,12 @@ El proyecto incluye las carpetas requeridas para abrirse directamente en Unity s
 │   ├── Sprites/
 │   └── TextMesh Pro/
 ├── ProjectSettings/        # Configuración global del motor (Tags, Layers, Input, etc.)
-├── Entregables/            # Capturas de evidencia y enlace de video
+├── Entregables/            # Capturas de evidencia y archivo con enlace del video
 │   ├── Coin con Script.PNG
+│   ├── Coins.PNG
 │   ├── CoinsText.PNG
-│   └── Enlace_Video.txt
+│   ├── CoinsText 2.PNG
+│   └── Video_Taller #6.txt
 ├── .gitignore              # Filtro para omitir archivos temporales y carpetas pesadas (Library, Temp, obj)
 └── README.md
 
