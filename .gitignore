@@ -49,5 +49,7 @@ crashlytics-build.properties
 Thumbs.db
 ehthumbs.db
 desktop.ini
-echo "*.slnx"
-echo ".vsconfig"
+
+# Archivos de soluciones y configuración de Visual Studio
+*.slnx
+.vsconfig
