@@ -49,3 +49,5 @@ crashlytics-build.properties
 Thumbs.db
 ehthumbs.db
 desktop.ini
+echo "*.slnx"
+echo ".vsconfig"
