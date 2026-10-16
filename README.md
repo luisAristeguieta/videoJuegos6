@@ -16,11 +16,11 @@ Proyecto desarrollado en Unity 2D (Unity 6). En este taller se implementa un sis
 
 ### 1. Prefab de Moneda y Script Asociado
 Configuración del componente `CircleCollider2D` con `Is Trigger` activado y vinculación del script `Coin.cs`:
-![Coin con Script](Entregables/Coin%20con%20Script.jpg)
+![Coin con Script](Entregables/Coin%20con%20Script.PNG)
 
 ### 2. Contador de Monedas en UI y Escena
 Configuración del elemento `CoinText` en Canvas con anclaje superior derecho (*Top-Right*) y monedas distribuidas en el nivel:
-![UI Contador de Monedas](Entregables/CoinsText.jpg)
+![UI Contador de Monedas](Entregables/CoinsText.PNG)
 
 ---
 
