@@ -1,48 +1,53 @@
-# Taller 6: Sistema de Recolección de Monedas y Contador UI
+# Taller 7: Sistema de Ataque y Derrota del Enemigo
 
 > **Aviso Académico:** Este proyecto ha sido desarrollado exclusivamente con fines formativos y académicos dentro del curso de Diseño y Desarrollo de Videojuegos 2D. Todos los recursos empleados se utilizan con propósito educativo.
 
-Proyecto desarrollado en Unity 2D (Unity 6). En este taller se implementa un sistema completo de recolección de monedas con detección por colisión (*Trigger*), animación cíclica por sprites y actualización dinámica de la interfaz de usuario (UI) en tiempo real mediante *TextMeshPro*.
+Proyecto desarrollado en Unity 2D (Unity 6). En este taller se implementa el sistema de combate cuerpo a cuerpo (*melee*) para el personaje principal mediante animaciones por *Trigger*, zonas de impacto física (*Hitbox*) calculadas con `Physics2D.OverlapCircleAll`, y la destrucción autónoma del enemigo al quedarse sin puntos de salud.
 
 ---
 
 ## 📹 Video de Demostración
-- **Video en Google Drive:** [Taller_6.mp4 - Google Drive](https://drive.google.com/file/d/1uL3ixW7WMi2Gy4WQC66_0sj1-N_Tdv4W)  
-*(El enlace también se encuentra respaldado en el archivo `Entregables/Enlace_Video.txt`)*
+- **Video en Google Drive:** [Taller_7.mp4 - Google Drive](https://drive.google.com/file/d/1I-I0RkEGU089Fq45jwiEXolfpd8hj9FW/view?usp=sharing)  
 
 ---
 
 ## 🖼️ Evidencias del Proyecto
 
-### 1. Prefab de Moneda y Script Asociado
-Configuración del componente `CircleCollider2D` con `Is Trigger` activado y vinculación del script `Coin.cs`:
-![Coin con Script](Entregables/Coin%20con%20Script.PNG)
+### 1. Configuración del Enemigo (Layer, BoxCollider2D y Script EnemyHealth)
+Asignación de la capa `Enemy Layer`, configuración de `BoxCollider2D` y vinculación del script `EnemyHealth.cs` con salud máxima de 3:
+![Enemy with Layer and Script](Entregables/Taller%207/Enemy%20with%20Layer%20and%20Script.png)
 
-### 2. Contador de Monedas en UI y Escena
-Configuración del elemento `CoinText` en Canvas con anclaje superior derecho (*Top-Right*) y monedas distribuidas en el nivel:
-![UI Contador de Monedas](Entregables/CoinsText.PNG)
+### 2. Configuración del Jugador (AttackPoint, Gizmos y Script PlayerAttack)
+Objeto hijo `AttackPoint` posicionado al frente de la espada, visualización de rango (*Hitbox*) con Gizmos y vinculación de `PlayerAttack.cs`:
+![Player con Script Player Attack](Entregables/Taller%207/Player%20con%20Script%20Player%20Attack.png)
 
 ---
 
 ## 🚀 Características Implementadas
 
-1. **Monedas Coleccionables (`Coin.prefab`):**
-   - Animación de rotación continua (`Coin_Idle`) a partir de hoja de sprites recortada con filtro *Point (no filter)*.
-   - Componente `CircleCollider2D` configurado en modo **`Is Trigger`** para permitir que el personaje atraviese el objeto y active el evento sin frenar su desplazamiento ni generar colisión física sólida.
-   - Múltiples instancias del prefab distribuidas a lo largo de las plataformas del nivel.
+1. **Configuración de Animaciones de Combate (`Animator`):**
+   - Creación del parámetro de tipo *Trigger* llamado `Attack` en la ventana Animator.
+   - Transición directa desde `Any State` hacia la animación `Attack` desmarcando la opción *Has Exit Time*.
+   - Transición de retorno desde `Attack` hacia `Idle` con *Has Exit Time* activado y fijando `Exit Time = 1` (con duración de transición en 0), permitiendo la reproducción fluida y completa del espadazo.
 
-2. **Detección y Lógica de Recolección (`Coin.cs`):**
-   - Detección precisa mediante la etiqueta estandarizada `Tag: "Player"`, asegurando que únicamente el jugador pueda recolectar los ítems.
-   - Comunicación con el gestor de UI para sumar unidades al contador.
-   - Destrucción inmediata del GameObject al ser recogido mediante `Destroy(gameObject)`.
+2. **Marcador de Ataque y Zona de Impacto (`Hitbox`):**
+   - Creación de un GameObject vacío hijo del personaje llamado `AttackPoint`, ubicado frontalmente en la posición del arma.
+   - Detección precisa de enemigos en tiempo real mediante `Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayer)`.
+   - Incorporación de `OnDrawGizmosSelected` para visualizar el radio del ataque en color rojo directamente en la escena.
 
-3. **Interfaz de Usuario y Contador Dinámico (`CoinUI.cs`):**
-   - Objeto `CoinText` creado con *TextMeshPro* posicionado en la esquina superior derecha con *Anchor Top-Right*.
-   - Implementación del patrón *Singleton* (`CoinUI.instance`) para una comunicación directa y desacoplada desde el script de cada moneda.
-   - Actualización en tiempo real del texto en pantalla (`Monedas: X`) cada vez que se recolecta una moneda.
+3. **Lógica de Salud y Destrucción del Enemigo (`EnemyHealth.cs`):**
+   - Inicialización de salud con `maxHealth = 3` y control en `currentHealth`.
+   - Método `TakeDamage(int damageAmount)` que descuenta el daño recibido.
+   - Evaluación condicional `currentHealth <= 0` que dispara de forma autónoma la función `Die()`, destruyendo el GameObject con `Destroy(gameObject)`.
 
-4. **Integración con Sistemas Previos:**
-   - Compatibilidad total con el sistema de vidas dual (barra de salud / contenedor de estrellas) y las patrullas enemigas sin interferencias en físicas ni tags.
+4. **Lógica de Ataque del Jugador (`PlayerAttack.cs`):**
+   - Detección de pulsación de la tecla `Z` o clic izquierdo del ratón (`Input.GetMouseButtonDown(0)`).
+   - Activación inmediata del trigger de animación `animator.SetTrigger("Attack")`.
+   - Filtrado exclusivo por capa de enemigos (`enemyLayer`), localizando el componente `EnemyHealth` de cada entidad alcanzada para aplicarle el daño configurado.
+
+5. **Configuración de Capas e Inspector:**
+   - Creación y asignación de la capa `Enemy Layer` en el prefab del enemigo patrullero.
+   - Vinculación en el Inspector del `Player` de las referencias `AttackPoint`, `Attack Range` (0.8) y la máscara de capa `Enemy Layer`.
 
 ---
 
@@ -53,19 +58,33 @@ El proyecto incluye las carpetas requeridas para abrirse directamente en Unity s
 ```text
 ├── Assets/                 # Carpeta completa de assets y sus archivos .meta
 │   ├── Animations/
+│   │   ├── Attack.anim
+│   │   ├── Player.controller
+│   │   └── ...
 │   ├── Prefabs/
+│   │   ├── Coin.prefab
+│   │   └── Enemigo_Patrulla.prefab
 │   ├── Scenes/
+│   │   └── Level 1.unity
 │   ├── Script/
-│   ├── Sprites/
-│   └── TextMesh Pro/
-├── ProjectSettings/        # Configuración global del motor (Tags, Layers, Input, etc.)
-├── Entregables/            # Capturas de evidencia y archivo con enlace del video
-│   ├── Coin con Script.PNG
-│   ├── Coins.PNG
-│   ├── CoinsText.PNG
-│   ├── CoinsText 2.PNG
-│   └── Video_Taller #6.txt
-├── .gitignore              # Filtro para omitir archivos temporales y carpetas pesadas (Library, Temp, obj)
+│   │   ├── CameraFollow.cs
+│   │   ├── Coin.cs
+│   │   ├── CoinUI.cs
+│   │   ├── EnemyHealth.cs
+│   │   ├── EnemyPatrol.cs
+│   │   ├── PlayerAttack.cs
+│   │   ├── PlayerController.cs
+│   │   └── PlayerHealth.cs
+│   └── Sprites/
+│       ├── Attack.png
+│       └── ...
+├── ProjectSettings/         # Configuración global del motor (Tags, Layers, Input, etc.)
+├── Entregables/             # Capturas de evidencia organizadas por taller
+│   ├── Taller 7/
+│   │   ├── Enemy with Layer and Script.png
+│   │   └── Player con Script Player Attack.png
+│   └── ...
+├── .gitignore               # Filtro para omitir archivos temporales y carpetas pesadas (Library, Temp, obj, etc.)
 └── README.md
 
 
