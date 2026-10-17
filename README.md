@@ -15,11 +15,11 @@ Proyecto desarrollado en Unity 2D (Unity 6). En este taller se implementa el sis
 
 ### 1. Configuración del Enemigo (Layer, BoxCollider2D y Script EnemyHealth)
 Asignación de la capa `Enemy Layer`, configuración de `BoxCollider2D` y vinculación del script `EnemyHealth.cs` con salud máxima de 3:
-![Enemy with Layer and Script](Entregables/Taller%207/Enemy%20with%20Layer%20and%20Script.png)
+![Enemy with Layer and Script](Entregables/Taller%207/Enemy%20with%20Layer%20and%20Script.PNG)
 
 ### 2. Configuración del Jugador (AttackPoint, Gizmos y Script PlayerAttack)
 Objeto hijo `AttackPoint` posicionado al frente de la espada, visualización de rango (*Hitbox*) con Gizmos y vinculación de `PlayerAttack.cs`:
-![Player con Script Player Attack](Entregables/Taller%207/Player%20con%20Script%20Player%20Attack.png)
+![Player con Script Player Attack](Entregables/Taller%207/Player%20con%20Script%20Player%20Attack.PNG)
 
 ---
 
